@@ -170,7 +170,7 @@ function make_iteration(M)
     M[2] = M[1][:]
     for i in 1:N^2
         M[1][i] == 2 ? continue : ""
-        x,y = array_to_coordinates(N,i)
+        x, y = array_to_coordinates(N,i)
         if M[1][i] == 1
             sum = check_neighbors(M,x,y)
             if sum < 3
@@ -181,3 +181,17 @@ function make_iteration(M)
     M[1] = M[2][:]
     return M
 end
+
+function matrix_collection(t)
+
+    anim = @animate for file in 1:t
+        heatmap(transform_matrix_plotable(read_matrix(string("data/iteration",file,".txt"))),
+                title = string("t = ",file))
+    end
+    return anim
+end
+
+function save_gif(anim,frame_rate)
+    gif(anim,string("output/anim_fps",frame_rate,".gif"),fps=frame_rate)
+end
+

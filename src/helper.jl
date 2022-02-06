@@ -47,3 +47,22 @@ function plot_matrix(M)
 end
 
 function sec_half(N) return Int((N/2 ÷ 1) + 1) end
+
+function transform_matrix_plotable(M)
+    N = size(M)[1]
+    M_list = transpose(reduce(hcat,[[M[x][y] for x in 1:N] for y in 1:N]))
+    return M_list
+    
+end
+
+function read_matrix(file)
+    f = open(file,"r")
+
+    M = []
+    for line in readlines(f)
+        aux = [Int(parse(Float64,x)) for x in split(line," ")]
+        push!(M,aux)
+    end
+    close(f)
+    return M
+end

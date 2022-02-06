@@ -1,6 +1,6 @@
 include("src/functions.jl")
 
-size_of_map = 50
+size_of_map = 100
 tax_rate = 0.15
 population_ratio = 0.40
 iterations = 100
@@ -17,4 +17,5 @@ for n in 1:iterations
     print_matrix(M,n)
 end
 
-plot_matrix(M)
+anim = matrix_collection(100)
+save_gif(anim,5)
