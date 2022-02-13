@@ -1,4 +1,5 @@
 include("helper.jl")
+include("matrixOperations.jl")
 
 function define_area(N)
     """ """
@@ -180,18 +181,5 @@ function make_iteration(M)
     end
     M[1] = M[2][:]
     return M
-end
-
-function matrix_collection(t)
-
-    anim = @animate for file in 1:t
-        heatmap(transform_matrix_plotable(read_matrix(string("data/iteration",file,".txt"))),
-                title = string("t = ",file))
-    end
-    return anim
-end
-
-function save_gif(anim,frame_rate)
-    gif(anim,string("output/anim_fps",frame_rate,".gif"),fps=frame_rate)
 end
 

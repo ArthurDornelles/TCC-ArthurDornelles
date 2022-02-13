@@ -1,0 +1,54 @@
+function coordinates_to_array(N,x,y)
+    """ """
+    x > N || y > N ? error("Coordinate beyond matrix. X = $x, Y = $y, N = $N") : ""
+
+    i = (y-1)*(N)+x
+    return i
+end
+
+function array_to_coordinates(N,i)
+    """ """
+    x = i % (N)
+    y = ((i-1) ÷ N) +1
+    if x == 0
+        x = N
+    end
+    return x, y
+end
+
+function transform_matrix_plotable(M)
+    N = size(M)[1]
+    M_list = transpose(reduce(hcat,[[M[x][y] for x in 1:N] for y in 1:N]))
+    return M_list
+    
+end
+
+function read_matrix(file)
+    f = open(file,"r")
+
+    M = []
+    for line in readlines(f)
+        aux = [Int(parse(Float64,x)) for x in split(line," ")]
+        push!(M,aux)
+    end
+    close(f)
+    return M
+end
+
+function size_matrix(M)
+    N = Int(sqrt(length(M[1]))÷1)
+    return N
+end
+
+function matrix_collection(t)
+
+    anim = @animate for file in 1:t
+        heatmap(transform_matrix_plotable(read_matrix(string("data/iteration",file,".txt"))),
+                title = string("t = ",file))
+    end
+    return anim
+end
+
+function save_gif(anim,frame_rate)
+    gif(anim,string("output/anim_fps",frame_rate,".gif"),fps=frame_rate)
+end

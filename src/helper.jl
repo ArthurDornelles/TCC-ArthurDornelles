@@ -7,14 +7,6 @@ function rand_coordinates(N)
     return x,y
 end
 
-function coordinates_to_array(N,x,y)
-    """ """
-    x > N || y > N ? error("Coordinate beyond matrix. X = $x, Y = $y, N = $N") : ""
-
-    i = (y-1)*(N)+x
-    return i
-end
-
 function array_to_coordinates(N,i)
     """ """
     x = i % (N)
@@ -23,11 +15,6 @@ function array_to_coordinates(N,i)
         x = N
     end
     return x, y
-end
-
-function size_matrix(M)
-    N = Int(sqrt(length(M[1]))÷1)
-    return N
 end
 
 function print_matrix(M,n_i)
@@ -47,22 +34,3 @@ function plot_matrix(M)
 end
 
 function sec_half(N) return Int((N/2 ÷ 1) + 1) end
-
-function transform_matrix_plotable(M)
-    N = size(M)[1]
-    M_list = transpose(reduce(hcat,[[M[x][y] for x in 1:N] for y in 1:N]))
-    return M_list
-    
-end
-
-function read_matrix(file)
-    f = open(file,"r")
-
-    M = []
-    for line in readlines(f)
-        aux = [Int(parse(Float64,x)) for x in split(line," ")]
-        push!(M,aux)
-    end
-    close(f)
-    return M
-end
