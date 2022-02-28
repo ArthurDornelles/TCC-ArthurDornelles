@@ -40,6 +40,11 @@ function size_matrix(M)
     return N
 end
 
+function size_unidim_matrix(M)
+    N = Int(sqrt(length(M))÷1)
+    return N
+end
+
 function matrix_collection(t)
 
     anim = @animate for file in 1:t
@@ -49,6 +54,17 @@ function matrix_collection(t)
     return anim
 end
 
-function save_gif(anim,frame_rate)
-    gif(anim,string("output/anim_fps",frame_rate,".gif"),fps=frame_rate)
+function flux_collection(t,P)
+    J = []
+    x_axis = []
+    anim = @animate for file in 1:t
+        append!(J,get_flux(file,P))
+        append!(x_axis,file)
+        plot(x_axis,J,title = string("t = ",file), xlims =(0,t), ylims = (-0.1,0.1))
+    end
+    return anim
+end
+
+function save_gif(anim,frame_rate,name)
+    gif(anim,string("output/",name,"_fps",frame_rate,".gif"),fps=frame_rate)
 end

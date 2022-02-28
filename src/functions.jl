@@ -1,5 +1,6 @@
 include("helper.jl")
-include("matrixOperations.jl")
+include("operations.jl")
+include("statistics.jl")
 
 function define_area(N)
     """ """
@@ -181,5 +182,18 @@ function make_iteration(M)
     end
     M[1] = M[2][:]
     return M
+end
+
+function get_flux(file,P)
+    """
+    
+    """
+    if file == 1
+        return 0
+    end
+    M = transform_matrix_plotable(read_matrix(string("data/iteration",file,".txt")))
+    M_old = transform_matrix_plotable(read_matrix(string("data/iteration",file-1,".txt")))
+    J = iteration_flux(M, M_old,P)
+    return J
 end
 
