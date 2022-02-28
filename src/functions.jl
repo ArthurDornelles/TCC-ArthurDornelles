@@ -1,4 +1,6 @@
 include("helper.jl")
+include("operations.jl")
+include("statistics.jl")
 
 function define_area(N)
     """ """
@@ -182,16 +184,16 @@ function make_iteration(M)
     return M
 end
 
-function matrix_collection(t)
-
-    anim = @animate for file in 1:t
-        heatmap(transform_matrix_plotable(read_matrix(string("data/iteration",file,".txt"))),
-                title = string("t = ",file))
+function get_flux(file,P)
+    """
+    
+    """
+    if file == 1
+        return 0
     end
-    return anim
-end
-
-function save_gif(anim,frame_rate)
-    gif(anim,string("output/anim_fps",frame_rate,".gif"),fps=frame_rate)
+    M = transform_matrix_plotable(read_matrix(string("data/iteration",file,".txt")))
+    M_old = transform_matrix_plotable(read_matrix(string("data/iteration",file-1,".txt")))
+    J = iteration_flux(M, M_old,P)
+    return J
 end
 

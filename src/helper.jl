@@ -7,29 +7,6 @@ function rand_coordinates(N)
     return x,y
 end
 
-function coordinates_to_array(N,x,y)
-    """ """
-    x > N || y > N ? error("Coordinate beyond matrix. X = $x, Y = $y, N = $N") : ""
-
-    i = (y-1)*(N)+x
-    return i
-end
-
-function array_to_coordinates(N,i)
-    """ """
-    x = i % (N)
-    y = ((i-1) ÷ N) +1
-    if x == 0
-        x = N
-    end
-    return x, y
-end
-
-function size_matrix(M)
-    N = Int(sqrt(length(M[1]))÷1)
-    return N
-end
-
 function print_matrix(M,n_i)
     n = 0
     N = size_matrix(M)
@@ -46,23 +23,19 @@ function plot_matrix(M)
     heatmap(M, color = :greys)
 end
 
-function sec_half(N) return Int((N/2 ÷ 1) + 1) end
-
-function transform_matrix_plotable(M)
-    N = size(M)[1]
-    M_list = transpose(reduce(hcat,[[M[x][y] for x in 1:N] for y in 1:N]))
-    return M_list
-    
-end
-
-function read_matrix(file)
-    f = open(file,"r")
-
-    M = []
-    for line in readlines(f)
-        aux = [Int(parse(Float64,x)) for x in split(line," ")]
-        push!(M,aux)
+function log_iteration(n,n_total)
+    if (n == n_total ÷ 4)
+            println("-------25% Complete-------")
     end
-    close(f)
-    return M
+    if (n == n_total ÷ 2)
+        println("-------50% Complete-------")
+    end
+    if (n == 3*n_total ÷ 4)
+        println("-------75% Complete-------")
+    end
+    if (n == n_total)
+        println("-------100% Complete-------")
 end
+end
+
+function sec_half(N) return Int((N/2 ÷ 1) + 1) end
