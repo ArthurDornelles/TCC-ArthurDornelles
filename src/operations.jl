@@ -17,6 +17,9 @@ function array_to_coordinates(N,i)
 end
 
 function transform_matrix_plotable(M)
+    """
+    Transform a Matrix from operation form to a plotable one.
+    """
     N = size(M)[1]
     M_list = transpose(reduce(hcat,[[M[x][y] for x in 1:N] for y in 1:N]))
     return M_list
@@ -48,19 +51,27 @@ end
 function matrix_collection(t)
 
     anim = @animate for file in 1:t
-        heatmap(transform_matrix_plotable(read_matrix(string("data/iteration",file,".txt"))),
+        heatmap(transform_matrix_plotable(read_matrix(string("data/iterations/iteration",file,".txt"))),
                 title = string("t = ",file))
     end
     return anim
 end
 
-function flux_collection(t,P)
+function flux_from_file_to_collection(t,P)
+    J = []
+    for file in 1:t
+        append!(J,get_flux_from_file(file,P))
+    end
+    return J
+end
+
+function flux_from_file_to_anim(t,P)
     J = []
     x_axis = []
     anim = @animate for file in 1:t
-        append!(J,get_flux(file,P))
+        append!(J,get_flux_from_file(file,P))
         append!(x_axis,file)
-        plot(x_axis,J,title = string("t = ",file), xlims =(0,t), ylims = (-0.1,0.1))
+        plot(x_axis,J,title = string("t = ",file), xlims = (0,t), ylims = (-0.1,0.1))
     end
     return anim
 end
