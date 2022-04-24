@@ -15,6 +15,6 @@ println("-------Starting Iterations-------")
 for n in 1:iterations
     global M
     log_iteration(n, iterations)
-    M = make_iteration(M)[1]
+    M = make_iteration(M, true, max_tax_rate)[1]
     print_matrix(M, n)
 end

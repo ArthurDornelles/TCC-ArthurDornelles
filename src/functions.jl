@@ -148,7 +148,7 @@ function check_neighbors(M, x, y)
 
 end
 
-function move_person(M, x, y)
+function move_person(M, x, y, dynamic_tax=false, max_tax_rate=1)
     N = size_matrix(M)
     i = coordinates_to_array(N, x, y)
     check = true
@@ -163,12 +163,34 @@ function move_person(M, x, y)
             check = false
         end
     end
-    M[2][i] = 0
+    if dynamic_tax == false
+        M[2][i]
+    elseif !max_tax(M, max_tax_rate) || x >= N / 2
+        M[2][i] = 0
+    else
+        M[2][i] = 2
+    end
     return M
 end
 
-function make_iteration(M)
+function max_tax(M, max_tax_rate)
+    count = 0
     N = size_matrix(M)
+    for i in M[2]
+        if i == 2
+            count += 1
+        end
+    end
+    if count / N >= max_tax_rate
+        return false
+    else
+        return true
+    end
+end
+
+function make_iteration(M, dynamic_tax=false, max_tax_rate=1)
+    N = size_matrix(M)
+    counter = 0
     M[2] = M[1][:]
     for i in 1:N^2
         M[1][i] == 2 ? continue : ""
@@ -176,12 +198,13 @@ function make_iteration(M)
         if M[1][i] == 1
             sum = check_neighbors(M, x, y)
             if sum < 3
-                M = move_person(M, x, y)
+                M = move_person(M, x, y, dynamic_tax, max_tax_rate)
+                counter += 1
             end
         end
     end
     M[1] = M[2][:]
-    return M
+    return M, counter
 end
 
 function get_flux_from_file(file, P)

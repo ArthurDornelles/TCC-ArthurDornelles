@@ -3,16 +3,19 @@ include("config.jl")
 
 using .ConfigParameters
 using .SamplingParameters
-const iterations = 100
+const iterations = 300
 
 for size_of_map_i in list_size_of_map
-    println("----------------------------------")
-    println("---------MAP SIZE ", size_of_map_i, "------------")
+
+
     for tax_rate_i in list_tax_rate
-        println("---------TAX RATE ", tax_rate_i, "------------")
+
 
         for population_rate_i in list_population_ratio
             global iterations
+            println("----------------------------------")
+            println("---------MAP SIZE ", size_of_map_i, "------------")
+            println("---------TAX RATE ", tax_rate_i, "------------")
             println("------POPULATION RATIO ", population_rate_i, "---------")
 
 
@@ -22,19 +25,22 @@ for size_of_map_i in list_size_of_map
                 M = define_area(size_of_map_i)
                 M = set_taxes_in_matrix(M, tax_rate_i)
                 M = set_initial_population(M, population_rate_i)
+                n_changes = []
                 for n in 1:iterations
                     log_iteration(n, iterations)
-                    M = make_iteration(M)
+                    M, n_changes_matrix = make_iteration(M)
                     print_matrix(M, n)
+                    append!(n_changes, n_changes_matrix)
                 end
+                return n_changes
             end
 
-            complete_iteration(100)
+            n_changes = complete_iteration(iterations)
 
             println("-----Starting Flux Calculation-----")
 
             J = (flux_from_file_to_collection(iterations, population_rate_i))
-            print_flux(J, size_of_map_i, tax_rate_i, population_rate_i, iterations)
+            print_flux(J, size_of_map_i, tax_rate_i, population_rate_i, iterations, n_changes)
 
             println("----------- FINISHED -------------")
         end

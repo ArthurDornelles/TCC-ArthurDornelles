@@ -19,13 +19,13 @@ function print_matrix(M, n_i)
     end
 end
 
-function print_flux(J, N, tax, P, iterations)
+function print_flux(J, N, tax, P, iterations, n_changes)
     header = string("_N-", string(N), "_tax-", string(trunc(Int, tax * 100)), "_P-", string(trunc(Int, P * 100)))
     fname = string("data/statistics/flux", header, ".txt")
     println("-----Started Flux Loading-----")
     open(fname, "w+") do f
         for i in 1:iterations
-            write(f, string(J[i]))
+            write(f, string(J[i], " ", string(n_changes[i])))
             write(f, "\n")
         end
     end
