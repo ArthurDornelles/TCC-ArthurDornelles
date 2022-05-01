@@ -21,7 +21,7 @@ function transform_matrix_plotable(M)
     Transform a Matrix from operation form to a plotable one.
     """
     N = size(M)[1]
-    M_list = transpose(reduce(hcat, [[M[x][y] for x in 1:N] for y in 1:N]))
+    M_list = transpose(reduce(hcat, [[M[x][y] == 2 ? 0 : M[x][y] for x in 1:N] for y in 1:N]))
     return M_list
 
 end

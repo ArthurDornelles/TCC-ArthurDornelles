@@ -3,7 +3,7 @@ include("config.jl")
 
 using .ConfigParameters
 using .SamplingParameters
-const iterations = 300
+const iterations = 200
 
 for size_of_map_i in list_size_of_map
 
@@ -28,7 +28,7 @@ for size_of_map_i in list_size_of_map
                 n_changes = []
                 for n in 1:iterations
                     log_iteration(n, iterations)
-                    M, n_changes_matrix = make_iteration(M)
+                    M, n_changes_matrix = make_iteration(M, false, 1, true)
                     print_matrix(M, n)
                     append!(n_changes, n_changes_matrix)
                 end

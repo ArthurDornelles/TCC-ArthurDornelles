@@ -2,7 +2,7 @@ include("src/functions.jl")
 include("config.jl")
 
 using .ConfigParameters
-const iterations = 100
+const iterations = 200
 
 
 M = define_area(size_of_map)
@@ -15,6 +15,6 @@ println("-------Starting Iterations-------")
 for n in 1:iterations
     global M
     log_iteration(n, iterations)
-    M = make_iteration(M, dynamic_tax=true, max_tax_rate=max_tax_rate)[1]
+    M = make_iteration(M, false, 1, true)[1]
     print_matrix(M, n)
 end
