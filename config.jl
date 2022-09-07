@@ -3,10 +3,10 @@ module ConfigParameters
 export size_of_map, tax_rate, population_ratio, iterations, max_tax_rate
 
 const size_of_map = 800
-const tax_rate = 0.075
-const population_ratio = 0.4
+const tax_rate = 0.1
+const population_ratio = 0.5
 const iterations = 300
-const max_tax_rate = 0.075
+const max_tax_rate = 0.4
 end
 
 module SamplingParameters
